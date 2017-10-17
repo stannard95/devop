@@ -20,9 +20,7 @@ Your virtual machine has been set up, try loggining in.
 If you can't see anything, try ' cd / ' to see all the directories.
 
 
-Reload the virtual machine and, load up your browser and type this in your search bar:
-
-	- vagrant reload
+Load up your browser and type this in your search bar:
 	
 	development.local/
 
