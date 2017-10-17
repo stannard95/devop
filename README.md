@@ -8,6 +8,8 @@ When installing vagrant and virtual box make sure it matches your operating syst
 Before you begin working in the enviornment, lets download the git repository.
 	
 	git clone git@github.com:stannard95/devops.git
+	
+Then type ' cd ' followed by the directory name.
 
 Once you have done, set up the virtual machine
 	
@@ -16,8 +18,6 @@ Once you have done, set up the virtual machine
 Your virtual machine has been set up, try loggining in.
 
 	vagrant ssh
-
-If you can't see anything, try ' cd / ' to see all the directories.
 
 
 Load up your browser and type this in your search bar:
