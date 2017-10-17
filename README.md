@@ -25,10 +25,4 @@ Load up your browser and type this in your search bar:
 	development.local/
 
 	
-#Useful commands
 
-	- 'vagrant destroy -f vagrant up' (Destroys the 	
-	virtual machine and loads it back up)
-
-	- 'sudo apt-get update -y' (Updates the virtual 
-	machine with any new changes.
