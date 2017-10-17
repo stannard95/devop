@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 
-	required_plugins = %w( vagrant-omnibus vagrant-aws )
+	required_plugins = %w( vagrant-omnibus vagrant-aws vagrant-hostsupdater)
 	required_plugins.each do |plugin|
 	    exec "vagrant plugin install #{plugin};vagrant #{ARGV.join(" ")}" unless Vagrant.has_plugin? plugin || ARGV[0] == 'plugin'
 	end
