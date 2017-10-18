@@ -3,6 +3,7 @@
 
 
 #Downloading vagrant and virtual box
+Skip this step if you these installed already.
 
 When installing vagrant and virtual box make sure it matches your operating system.
 
@@ -11,10 +12,9 @@ When installing vagrant and virtual box make sure it matches your operating syst
 	 
 #Setting up your environment
 
-Before you begin working in your enviornment, lets download the git repository using the terminal.
+Before you begin working in your environment, lets download the git repository using the terminal.
 	
-	git clone git@github.com:stannard95/devops.git
-	
+	git clone git@github.com:stannard95/devops.gi
 	cd 'directory-name'
 	
 
