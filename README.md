@@ -1,8 +1,8 @@
-#Devops: Using a vagrant machine
+# Devops: Using a vagrant machine
 
 
 
-#Downloading vagrant and virtual box
+# Downloading vagrant and virtual box
 Skip this step if you these installed already.
 
 When installing vagrant and virtual box make sure it matches your operating system.
@@ -10,7 +10,7 @@ When installing vagrant and virtual box make sure it matches your operating syst
 	 https://www.vagrantup.com/downloads.html
 	 https://www.virtualbox.org/wiki/Downloads
 	 
-#Setting up your environment
+# Setting up your environment
 
 Before you begin working in your environment, lets download the git repository using the terminal.
 	
