@@ -3,7 +3,7 @@
 
 
 # Downloading vagrant and virtual box
-Skip this step if you these installed already.
+Skip this step if you have these installed already.
 
 When installing vagrant and virtual box make sure it matches your operating system.
 
@@ -27,10 +27,14 @@ Your virtual machine has been set up, try to login.
 
 	vagrant ssh
 
+Now that you're in the machine lets go to the app directory and run the node via the terminal. This will connect you to the local port.
 
+	cd app
+	node app.js
+	
 Load up your browser and type this in your search bar:
 	
-	development.local/
+	development.local:3000
 
 	
 

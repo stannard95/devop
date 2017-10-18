@@ -1,5 +1,1 @@
-vagrant/machines/default/virtualbox
-
-ubuntu-xenial-16.04-cloudimg-console.log
-
-/.vagrant
+node_modules
