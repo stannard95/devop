@@ -16,5 +16,5 @@ sudo bash nodesource_setup.sh
 # Installs node
 sudo apt-get install -y nodejs
 
-# Installs mp2 using npm
+# Installs mp2 us
 sudo npm install pm2 -g
