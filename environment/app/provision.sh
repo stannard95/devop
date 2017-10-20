@@ -23,3 +23,10 @@ sudo npm install pm2 -g
 
 sudo adduser --disabled-password --gecos app
 sudo chown -R app:app app /home/ubuntu/app
+sudo cp /home/ubuntu/devop/environment/app/reverse-proxy.conf /etc/nginx/sites-available
+
+sudo cp /home/ubuntu/environment/app/reverse-proxy.conf /etc/nginx/sites-available
+sudo ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/reverse-proxy.conf
+sudo service nginx configtest
+sudo service nginx restart
+

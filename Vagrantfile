@@ -13,8 +13,8 @@ Vagrant.configure("2") do |config|
   config.hostsupdater.aliases = ["development.local"]
 
   # directory of host to directory of guest
-  config.vm.synced_folder "app", "/home/ubuntu/app" 
-
+  config.vm.synced_folder "app", "/home/ubuntu/app"
+  config.vm.synced_folder "environment", "/home/ubuntu/environment"
   # run the app provision script
   config.vm.provision "shell", path: "environment/app/provision.sh"
 
