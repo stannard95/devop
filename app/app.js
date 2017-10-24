@@ -26,6 +26,8 @@ if(process.env.DB_HOST) {
   });
 }
 
+// yeah boiii
+
 app.get('/fibonacci/:n' , function(req,res){
 
   // high cpu usage function
