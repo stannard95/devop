@@ -16,7 +16,7 @@ sudo apt-get install mongodb-org -y
 
 # Update mongod.conf file
 sudo rm /etc/mongod.conf
-sudo cp /home/ubuntu/environment/mongod.conf /etc/mongod.conf 
+sudo cp /home/ubuntu/environment/db/mongod.conf /etc/mongod.conf 
 
 # Start up mongod
 sudo systemctl enable mongod
