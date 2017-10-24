@@ -20,7 +20,9 @@ Vagrant.configure("2") do |config|
     app.vm.synced_folder "app", "/home/ubuntu/app"
     app.vm.synced_folder "environment", "/home/ubuntu/environment"
     # run the app provision script
+    app.vm.provision "shell", inline: "echo 'export DB_HOST=mongodb://10.3.1.238/blog' >> /home/ubuntu/.bashrc"
     app.vm.provision "shell", path: "environment/app/provision.sh"
+
 
 
   end
