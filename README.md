@@ -37,4 +37,6 @@ Load up your browser and type this in your search bar:
 	development.local:3000
 
 	
+## Git Testing
 
+This is test to see whether George can push to the git repo.
