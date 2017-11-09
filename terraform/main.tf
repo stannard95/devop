@@ -132,8 +132,8 @@ resource "aws_network_acl" "private-app-keir" {
     rule_no    = 300
     action     = "allow"
     cidr_block = "10.6.2.0/24"
-    from_port  = 27017
-    to_port    = 27017
+    from_port  = 3000
+    to_port    = 3000
   }
   egress {
     protocol   = "tcp"
