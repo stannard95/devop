@@ -113,7 +113,7 @@ resource "aws_network_acl" "public-elb-keir" {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "10.6.0.0/24"
+    cidr_block = "${aws_subnet.private-app.cidr_block}"
     from_port  = 0
     to_port    = 65535
   }
@@ -131,7 +131,7 @@ resource "aws_network_acl" "private-app-keir" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = "10.6.2.0/24"
+    cidr_block = "${aws_subnet.public-elb.cidr_block}"
     from_port  = 3000
     to_port    = 3000
   }
@@ -139,7 +139,7 @@ resource "aws_network_acl" "private-app-keir" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = "10.6.2.0/24"
+    cidr_block = "${aws_subnet.public-elb.cidr_block}"
     from_port  = 0
     to_port    = 65535
   }
@@ -156,7 +156,7 @@ resource "aws_network_acl" "private-db-keir" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = "10.6.0.0/24"
+    cidr_block = "${aws_subnet.private-app.cidr_block}"
     from_port  = 27017
     to_port    = 27017
   }
@@ -164,7 +164,7 @@ resource "aws_network_acl" "private-db-keir" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = "10.6.0.0/24"
+    cidr_block = "${aws_subnet.private-app.cidr_block}"
     from_port  = 0
     to_port    = 65535
   }
