@@ -294,20 +294,13 @@ resource "aws_subnet" "private-db" {
 resource "aws_elb" "keir-elb" {
   name               = "keir-elb"
   availability_zones = ["eu-west-2a"]
+  subnets = ["${aws_subnet.public-elb.id}"]
 
   listener {
     instance_port     = 8000
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
-  }
-
-  listener {
-    instance_port      = 8000
-    instance_protocol  = "http"
-    lb_port            = 443
-    lb_protocol        = "https"
-    ssl_certificate_id = "arn:aws:iam::123456789012:server-certificate/certName"
   }
 
   health_check {
@@ -318,7 +311,7 @@ resource "aws_elb" "keir-elb" {
     interval            = 30
   }
 
-  instances                   = ["${aws_instance.private-app.id}"]
+  instances                   = ["${aws_instance.app.id}"]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
