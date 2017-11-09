@@ -293,11 +293,10 @@ resource "aws_subnet" "private-db" {
 # Create a new load balancer
 resource "aws_elb" "keir-elb" {
   name               = "keir-elb"
-  availability_zones = ["eu-west-2a"]
   subnets = ["${aws_subnet.public-elb.id}"]
 
   listener {
-    instance_port     = 8000
+    instance_port     = 3000
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
@@ -307,7 +306,7 @@ resource "aws_elb" "keir-elb" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 3
-    target              = "HTTP:8000/"
+    target              = "HTTP:3000/"
     interval            = 30
   }
 
