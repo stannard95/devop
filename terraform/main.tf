@@ -2,7 +2,7 @@ provider "aws" {
 	region = "eu-west-2"
 }
 
-# app security group
+# elb security group
 resource "aws_security_group" "elb" {
   name = "elb"
   description = "Allow all inbound and outbound traffic"
@@ -23,8 +23,8 @@ resource "aws_security_group" "elb" {
   }
 
   egress {
-    from_port       = 5432
-    to_port         = 5432
+    from_port       = 3000
+    to_port         = 3000
     protocol        = "tcp"
     cidr_blocks     = ["${aws_subnet.private-app.cidr_block}"]
   }
@@ -54,8 +54,8 @@ resource "aws_security_group" "app" {
   # }
 
   egress {
-    from_port       = 5432
-    to_port         = 5432
+    from_port       = 27017
+    to_port         = 27017
     protocol        = "tcp"
     cidr_blocks     = ["${aws_subnet.private-db.cidr_block}"]
   }
@@ -71,15 +71,15 @@ resource "aws_security_group" "db" {
   vpc_id      = "${aws_vpc.uat.id}"
 
   ingress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 27017
+    to_port     = 27017
     protocol    = "tcp"
     cidr_blocks = ["${aws_subnet.private-app.cidr_block}"]
   }
 
   egress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 27017
+    to_port     = 27017
     protocol    = "tcp"
     cidr_blocks = ["${aws_subnet.private-app.cidr_block}"]
   }
@@ -239,6 +239,11 @@ resource "aws_route_table" "private-rt" {
 
 # db subnet && route table assoication
 resource "aws_route_table_association" "private-keir" {
+  subnet_id      = "${aws_subnet.private-app.id}"
+  route_table_id = "${aws_route_table.private-rt.id}"
+}
+
+resource "aws_route_table_association" "private-keir" {
   subnet_id      = "${aws_subnet.private-db.id}"
   route_table_id = "${aws_route_table.private-rt.id}"
 }
@@ -293,6 +298,7 @@ resource "aws_subnet" "private-db" {
 # Create a new load balancer
 resource "aws_elb" "keir-elb" {
   name               = "keir-elb"
+  security_groups = ["${aws_security_group.elb.id}"]
   subnets = ["${aws_subnet.public-elb.id}"]
 
   listener {
@@ -312,9 +318,9 @@ resource "aws_elb" "keir-elb" {
 
   instances                   = ["${aws_instance.app.id}"]
   cross_zone_load_balancing   = true
-  idle_timeout                = 400
+  idle_timeout                = 10
   connection_draining         = true
-  connection_draining_timeout = 400
+  connection_draining_timeout = 10
 
   tags {
     Name = "keir-elb"
