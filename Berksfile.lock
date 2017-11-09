@@ -1,0 +1,11 @@
+DEPENDENCIES
+  mongodb-server
+    git: https://github.com/stannard95/mongochef
+    revision: ba975de618fc9b1ec2b739e84220c4be30cc6757
+  node-server
+    git: https://github.com/stannard95/nodechef
+    revision: 2a74879a4fd116f8f8d51a40439f12e1620deafd
+
+GRAPH
+  mongodb-server (0.1.2)
+  node-server (0.1.7)
