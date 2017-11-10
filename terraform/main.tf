@@ -16,9 +16,9 @@ resource "aws_security_group" "elb" {
   }
 
   ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -46,18 +46,25 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["${aws_subnet.public-elb.cidr_block}"]
   }
 
-  # ingress {
-  #   from_port = 443
-  #   to_port = 443
-  #   protocol = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["${aws_subnet.private-db.cidr_block}"]
+  }
 
   egress {
     from_port       = 27017
     to_port         = 27017
     protocol        = "tcp"
     cidr_blocks     = ["${aws_subnet.private-db.cidr_block}"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 65535
+    protocol        = "tcp"
+    cidr_blocks     = ["${aws_subnet.public-elb.cidr_block}"]
   }
   tags {
     Name = "app-keir"
@@ -100,14 +107,6 @@ resource "aws_network_acl" "public-elb-keir" {
     from_port  = 80
     to_port    = 80
   }
-  egress {
-    protocol   = "tcp"
-    rule_no    = 300
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 65535
-  }
 
   ingress {
     protocol   = "tcp"
@@ -118,23 +117,42 @@ resource "aws_network_acl" "public-elb-keir" {
     to_port    = 65535
   }
  
+  egress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 65535
+  }
+
   tags {
     Name = "public-keir"
   }
 }
 
-# private network acl
+# private app network acl
 resource "aws_network_acl" "private-app-keir" {
   vpc_id = "${aws_vpc.uat.id}"
   subnet_ids = ["${aws_subnet.private-app.id}"]
- ingress {
-    protocol   = "tcp"
-    rule_no    = 300
-    action     = "allow"
-    cidr_block = "${aws_subnet.public-elb.cidr_block}"
-    from_port  = 3000
-    to_port    = 3000
+  ingress {
+    protocol    = "tcp"
+    rule_no     = 300
+    action      = "allow"
+    cidr_block  = "${aws_subnet.public-elb.cidr_block}"
+    from_port   = 3000
+    to_port     = 3000
   }
+
+  ingress {
+    protocol    = "tcp"
+    rule_no     = 299
+    action      = "allow"
+    cidr_block  = "${aws_subnet.private-db.cidr_block}"
+    from_port   = 0
+    to_port     = 65535
+  }
+
   egress {
     protocol   = "tcp"
     rule_no    = 300
@@ -143,12 +161,22 @@ resource "aws_network_acl" "private-app-keir" {
     from_port  = 0
     to_port    = 65535
   }
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 299
+    action     = "allow"
+    cidr_block = "${aws_subnet.private-db.cidr_block}"
+    from_port  = 27017
+    to_port    = 27017
+  }
+
   tags {
     Name = "private-app-keir"
   }
 }
 
-# private network acl
+# private db network acl
 resource "aws_network_acl" "private-db-keir" {
   vpc_id = "${aws_vpc.uat.id}"
   subnet_ids = ["${aws_subnet.private-db.id}"]
@@ -160,6 +188,7 @@ resource "aws_network_acl" "private-db-keir" {
     from_port  = 27017
     to_port    = 27017
   }
+
   egress {
     protocol   = "tcp"
     rule_no    = 300
@@ -168,6 +197,7 @@ resource "aws_network_acl" "private-db-keir" {
     from_port  = 0
     to_port    = 65535
   }
+
   tags {
     Name = "private-db-keir"
   }
@@ -177,7 +207,7 @@ resource "aws_network_acl" "private-db-keir" {
 resource "aws_network_acl" "default-keir" {
   vpc_id = "${aws_vpc.uat.id}"
   ingress {
-     protocol   = -1
+     protocol  = -1
     rule_no    = 99
     action     = "deny"
     cidr_block = "0.0.0.0/0"
@@ -243,7 +273,7 @@ resource "aws_route_table_association" "private-keir" {
   route_table_id = "${aws_route_table.private-rt.id}"
 }
 
-resource "aws_route_table_association" "private-keir" {
+resource "aws_route_table_association" "privat-keir" {
   subnet_id      = "${aws_subnet.private-db.id}"
   route_table_id = "${aws_route_table.private-rt.id}"
 }
@@ -256,6 +286,7 @@ resource "aws_vpc" "uat" {
   }
 }
 
+# template file
 data "template_file" "init" {
   template = "${file("templates/init.sh.tpl")}"
 
@@ -264,7 +295,7 @@ data "template_file" "init" {
   }
 }
 
-# app subnet
+# elb subnet
 resource "aws_subnet" "public-elb" {
   vpc_id = "${aws_vpc.uat.id}"
   cidr_block = "10.6.2.0/24"
@@ -298,8 +329,8 @@ resource "aws_subnet" "private-db" {
 # Create a new load balancer
 resource "aws_elb" "keir-elb" {
   name               = "keir-elb"
-  security_groups = ["${aws_security_group.elb.id}"]
-  subnets = ["${aws_subnet.public-elb.id}"]
+  security_groups    = ["${aws_security_group.elb.id}"]
+  subnets            = ["${aws_subnet.public-elb.id}"]
 
   listener {
     instance_port     = 3000
