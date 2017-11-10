@@ -54,17 +54,17 @@ resource "aws_security_group" "app" {
   }
 
   egress {
-    from_port       = 27017
-    to_port         = 27017
-    protocol        = "tcp"
-    cidr_blocks     = ["${aws_subnet.private-db.cidr_block}"]
+    from_port    = 27017
+    to_port      = 27017
+    protocol     = "tcp"
+    cidr_blocks  = ["${aws_subnet.private-db.cidr_block}"]
   }
 
   egress {
-    from_port       = 0
-    to_port         = 65535
-    protocol        = "tcp"
-    cidr_blocks     = ["${aws_subnet.public-elb.cidr_block}"]
+    from_port    = 0
+    to_port      = 65535
+    protocol     = "tcp"
+    cidr_blocks  = ["${aws_subnet.public-elb.cidr_block}"]
   }
   tags {
     Name = "app-keir"
